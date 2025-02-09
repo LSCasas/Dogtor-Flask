@@ -18,5 +18,9 @@ def dueños():
 def citas():
     return render_template('citas.html')
 
+@app.route('/mascotas')
+def mascotas():
+    return render_template('mascotas.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
