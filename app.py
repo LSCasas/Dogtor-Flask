@@ -22,5 +22,9 @@ def citas():
 def mascotas():
     return render_template('mascotas.html')
 
+@app.route('/procedimientos')
+def procedimientos():
+    return render_template('procedimientos.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
