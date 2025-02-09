@@ -10,5 +10,9 @@ def home():
 def veterinarios():
     return render_template('veterinarios.html')
 
+@app.route('/dueños')
+def duenos():
+    return render_template('dueños.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
