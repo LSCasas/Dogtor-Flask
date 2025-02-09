@@ -11,8 +11,12 @@ def veterinarios():
     return render_template('veterinarios.html')
 
 @app.route('/dueños')
-def duenos():
+def dueños():
     return render_template('dueños.html')
+
+@app.route('/citas')
+def citas():
+    return render_template('citas.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
