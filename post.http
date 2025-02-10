@@ -1,0 +1,8 @@
+GET http://localhost:5000/veterinarios
+Content-Type: application/json
+
+{
+    "nombre": "Dr. Oscar Lopez",
+    "especialidad": "Cardiologia",
+    "telefono": "555-5678"
+}
