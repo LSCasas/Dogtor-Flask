@@ -87,6 +87,8 @@
       <table class="table table-striped mt-3">
         <thead>
           <tr>
+            <th>ID</th>
+            <!-- Nueva columna para mostrar el ID -->
             <th>Nombre</th>
             <th>Especialidad</th>
             <th>Teléfono</th>
@@ -96,6 +98,8 @@
         <tbody>
           {% for veterinario in veterinarios %}
           <tr>
+            <td>{{ veterinario._id }}</td>
+            <!-- Muestra el ID del veterinario -->
             <td>{{ veterinario.nombre }}</td>
             <td>{{ veterinario.especialidad }}</td>
             <td>{{ veterinario.telefono }}</td>

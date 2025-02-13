@@ -88,6 +88,8 @@
       <table class="table table-striped mt-3">
         <thead>
           <tr>
+            <th>ID</th>
+            <!-- Nueva columna para mostrar el ID -->
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Costo</th>
@@ -97,6 +99,8 @@
         <tbody>
           {% for procedimiento in procedimientos %}
           <tr>
+            <td>{{ procedimiento._id }}</td>
+            <!-- Muestra el ID del procedimiento -->
             <td>{{ procedimiento.nombre }}</td>
             <td>{{ procedimiento.descripcion }}</td>
             <td>${{ procedimiento.costo }}</td>

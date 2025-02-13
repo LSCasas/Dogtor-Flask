@@ -132,6 +132,78 @@ def eliminar_dueño(id):
     return redirect(url_for('dueños'))
 
 
+
+################# CRUD para Mascotas #################
+
+# Mostrar mascotas en la plantilla
+@app.route('/mascotas')
+def mascotas():
+    mascotas = mongo.db.mascotas.find()
+    lista_mascotas = []
+    
+    for mascota in mascotas:
+        mascota['_id'] = str(mascota['_id'])  # Convertir ObjectId a string
+        lista_mascotas.append(mascota)
+
+    return render_template('mascotas.html', mascotas=lista_mascotas)
+
+# Crear mascota
+@app.route("/mascotas/agregar", methods=['POST'])
+def agregar_mascota():
+    nombre = request.form.get('nombre')
+    especie = request.form.get('especie')
+    edad = request.form.get('edad')
+    id_dueño = request.form.get('id_dueño')
+
+    if nombre and especie and edad and id_dueño:
+        mongo.db.mascotas.insert_one({
+            "nombre": nombre,
+            "especie": especie,
+            "edad": edad,
+            "id_dueño": ObjectId(id_dueño)  # Guardar como ObjectId
+        })
+
+    return redirect(url_for('mascotas'))
+
+# Obtener mascota por ID
+@app.route("/mascotas/obtenerPorId/<id>", methods=['GET'])
+def obtener_mascota_por_id(id):
+    mascota = mongo.db.mascotas.find_one({"_id": ObjectId(id)})
+    if not mascota:
+        return redirect(url_for('mascotas'))
+    mascota['_id'] = str(mascota['_id'])  # Convertir ObjectId a string
+    return render_template('actualizar_mascota.html', mascota=mascota)
+
+# Actualizar mascota
+@app.route("/mascotas/actualizar/<id>", methods=['POST'])
+def actualizar_mascota(id):
+    nombre = request.form.get('nombre')
+    especie = request.form.get('especie')
+    edad = request.form.get('edad')
+    id_dueño = request.form.get('id_dueño')
+
+    if nombre and especie and edad and id_dueño:
+        mongo.db.mascotas.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "nombre": nombre,
+                "especie": especie,
+                "edad": edad,
+                "id_dueño": ObjectId(id_dueño)  # Actualizar como ObjectId
+            }}
+        )
+
+    return redirect(url_for('mascotas'))
+
+# Eliminar mascota
+@app.route("/mascotas/eliminar/<id>", methods=['POST'])
+def eliminar_mascota(id):
+    mongo.db.mascotas.delete_one({"_id": ObjectId(id)})
+    return redirect(url_for('mascotas'))
+
+
+
+
 ################# CRUD para Procedimientos #################
 
 # Mostrar procedimientos en la plantilla
@@ -191,6 +263,7 @@ def actualizar_procedimiento(id):
 def eliminar_procedimiento(id):
     mongo.db.procedimientos.delete_one({"_id": ObjectId(id)})
     return redirect(url_for('procedimientos'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
