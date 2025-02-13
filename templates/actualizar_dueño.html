@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dueños - Dogtor</title>
+    <title>Editar Dueño - Dogtor</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -56,65 +56,48 @@
       </div>
     </nav>
 
-    <!-- Formulario para agregar dueños -->
+    <!-- Formulario para editar dueño -->
     <div class="container mt-4">
-      <h2 class="text-center">Registro de Dueños</h2>
-      <form action="{{ url_for('agregar_dueño') }}" method="POST">
+      <h2 class="text-center">Editar Dueño</h2>
+      <form
+        action="{{ url_for('actualizar_dueño', id=dueño._id) }}"
+        method="POST"
+      >
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" class="form-control" name="nombre" required />
+          <input
+            type="text"
+            class="form-control"
+            name="nombre"
+            value="{{ dueño.nombre }}"
+            required
+          />
         </div>
         <div class="mb-3">
           <label for="direccion" class="form-label">Dirección</label>
-          <input type="text" class="form-control" name="direccion" required />
+          <input
+            type="text"
+            class="form-control"
+            name="direccion"
+            value="{{ dueño.direccion }}"
+            required
+          />
         </div>
         <div class="mb-3">
           <label for="telefono" class="form-label">Teléfono</label>
-          <input type="text" class="form-control" name="telefono" required />
+          <input
+            type="text"
+            class="form-control"
+            name="telefono"
+            value="{{ dueño.telefono }}"
+            required
+          />
         </div>
-        <button type="submit" class="btn btn-custom w-100">Registrar</button>
+        <button type="submit" class="btn btn-custom w-100">Actualizar</button>
       </form>
-    </div>
-
-    <!-- Tabla de dueños -->
-    <div class="container mt-5">
-      <h2 class="text-center">Lista de Dueños</h2>
-      <table class="table table-striped mt-3">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for dueño in dueños %}
-          <tr>
-            <td>{{ dueño.nombre }}</td>
-            <td>{{ dueño.direccion }}</td>
-            <td>{{ dueño.telefono }}</td>
-            <td>
-              <a
-                href="{{ url_for('obtener_dueño_por_id', id=dueño._id) }}"
-                class="btn btn-sm btn-warning"
-                >Editar</a
-              >
-              <form
-                action="{{ url_for('eliminar_dueño', id=dueño._id) }}"
-                method="POST"
-                class="d-inline"
-                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este dueño?');"
-              >
-                <button type="submit" class="btn btn-sm btn-danger">
-                  Eliminar
-                </button>
-              </form>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <a href="{{ url_for('dueños') }}" class="btn btn-secondary mt-3 w-100"
+        >Cancelar</a
+      >
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -59,7 +59,7 @@
     <!-- Formulario para agregar veterinarios -->
     <div class="container mt-4">
       <h2 class="text-center">Registro de Veterinarios</h2>
-      <form action="{{ url_for('veterinarios') }}" method="POST">
+      <form action="{{ url_for('agregar_veterinario') }}" method="POST">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
           <input type="text" class="form-control" name="nombre" required />
@@ -101,7 +101,7 @@
             <td>{{ veterinario.telefono }}</td>
             <td>
               <a
-                href="{{ url_for('editar_veterinario', id=veterinario._id) }}"
+                href="{{ url_for('obtenerPorId', id=veterinario._id) }}"
                 class="btn btn-sm btn-warning"
                 >Editar</a
               >
@@ -109,6 +109,7 @@
                 action="{{ url_for('eliminar_veterinario', id=veterinario._id) }}"
                 method="POST"
                 class="d-inline"
+                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este veterinario?');"
               >
                 <button type="submit" class="btn btn-sm btn-danger">
                   Eliminar
