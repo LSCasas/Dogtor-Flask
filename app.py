@@ -132,5 +132,65 @@ def eliminar_dueño(id):
     return redirect(url_for('dueños'))
 
 
+################# CRUD para Procedimientos #################
+
+# Mostrar procedimientos en la plantilla
+@app.route('/procedimientos')
+def procedimientos():
+    procedimientos = mongo.db.procedimientos.find()
+    lista_procedimientos = []
+
+    for procedimiento in procedimientos:
+        procedimiento['_id'] = str(procedimiento['_id'])  # Convertir ObjectId a string
+        lista_procedimientos.append(procedimiento)
+
+    return render_template('procedimientos.html', procedimientos=lista_procedimientos)
+
+# Crear procedimiento
+@app.route("/procedimientos/agregar", methods=['POST'])
+def agregar_procedimiento():
+    nombre = request.form.get('nombre')
+    descripcion = request.form.get('descripcion')
+    costo = request.form.get('costo')
+
+    if nombre and descripcion and costo:
+        mongo.db.procedimientos.insert_one({
+            "nombre": nombre,
+            "descripcion": descripcion,
+            "costo": costo
+        })
+
+    return redirect(url_for('procedimientos'))
+
+# Obtener procedimiento por ID
+@app.route("/procedimientos/obtenerPorId/<id>", methods=['GET'])
+def obtener_procedimiento_por_id(id):
+    procedimiento = mongo.db.procedimientos.find_one({"_id": ObjectId(id)})
+    if not procedimiento:
+        return redirect(url_for('procedimientos'))
+    procedimiento['_id'] = str(procedimiento['_id'])  # Convertir ObjectId a string
+    return render_template('actualizar_procedimiento.html', procedimiento=procedimiento)
+
+# Actualizar procedimiento
+@app.route("/procedimientos/actualizar/<id>", methods=['POST'])
+def actualizar_procedimiento(id):
+    nombre = request.form.get('nombre')
+    descripcion = request.form.get('descripcion')
+    costo = request.form.get('costo')
+
+    if nombre and descripcion and costo:
+        mongo.db.procedimientos.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"nombre": nombre, "descripcion": descripcion, "costo": costo}}
+        )
+
+    return redirect(url_for('procedimientos'))
+
+# Eliminar procedimiento
+@app.route("/procedimientos/eliminar/<id>", methods=['POST'])
+def eliminar_procedimiento(id):
+    mongo.db.procedimientos.delete_one({"_id": ObjectId(id)})
+    return redirect(url_for('procedimientos'))
+
 if __name__ == '__main__':
     app.run(debug=True)
