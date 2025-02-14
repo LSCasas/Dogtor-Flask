@@ -10,6 +10,83 @@ mongo = PyMongo(app)
 def index():
     return render_template('index.html')
 
+################# CRUD para Citas #################
+
+# Mostrar citas en la plantilla
+@app.route('/citas')
+def citas():
+    citas = mongo.db.citas.find()
+    lista_citas = []
+    
+    for cita in citas:
+        cita['_id'] = str(cita['_id'])  # Convertir ObjectId a string
+        lista_citas.append(cita)
+
+    return render_template('citas.html', citas=lista_citas)
+
+# Crear cita
+@app.route("/citas/agregar", methods=['POST'])
+def agregar_cita():
+    fecha = request.form.get('fecha')
+    hora = request.form.get('hora')
+    id_mascota = request.form.get('id_mascota')
+    id_veterinario = request.form.get('id_veterinario')
+    id_procedimiento = request.form.get('id_procedimiento')
+
+    print("Datos recibidos:", fecha, hora, id_mascota, id_veterinario, id_procedimiento)
+
+    if fecha and hora and id_mascota and id_veterinario and id_procedimiento:
+        mongo.db.citas.insert_one({
+            "fecha": fecha,
+            "hora": hora,
+            "id_mascota": id_mascota,
+            "id_veterinario": id_veterinario,
+            "id_procedimiento": id_procedimiento,
+        })
+        print("Cita agregada correctamente")
+    else:
+        print("Error: Datos incompletos")
+
+    return redirect(url_for('citas'))
+# Obtener cita por ID
+@app.route("/citas/obtenerPorId/<id>", methods=['GET'])
+def obtener_cita_por_id(id):
+    cita = mongo.db.citas.find_one({"_id": ObjectId(id)})
+    if not cita:
+        return redirect(url_for('citas'))
+    cita['_id'] = str(cita['_id'])  # Convertir ObjectId a string
+    return render_template('actualizar_cita.html', cita=cita)
+
+# Actualizar cita
+@app.route("/citas/actualizar/<id>", methods=['POST'])
+def actualizar_cita(id):
+    fecha = request.form.get('fecha')
+    hora = request.form.get('hora')
+    id_mascota = request.form.get('id_mascota')
+    id_veterinario = request.form.get('id_veterinario')
+    id_procedimiento = request.form.get('id_procedimiento')
+
+    if fecha and hora and id_mascota and id_veterinario and id_procedimiento:
+        mongo.db.citas.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "fecha": fecha,
+                "hora": hora,
+                "id_mascota": id_mascota,
+                "id_veterinario": id_veterinario,
+                "id_procedimiento": id_procedimiento
+            }}
+        )
+
+    return redirect(url_for('citas'))
+
+# Eliminar cita
+@app.route("/citas/eliminar/<id>", methods=['POST'])
+def eliminar_cita(id):
+    mongo.db.citas.delete_one({"_id": ObjectId(id)})
+    return redirect(url_for('citas'))
+
+
 ################# CRUD para Veterinarios #################
 
 # Mostrar veterinarios en la plantilla
@@ -133,78 +210,6 @@ def eliminar_dueño(id):
 
 
 
-################# CRUD para Citas #################
-
-# Mostrar citas en la plantilla
-@app.route('/citas')
-def citas():
-    citas = mongo.db.citas.find()
-    lista_citas = []
-    
-    for cita in citas:
-        cita['_id'] = str(cita['_id'])  # Convertir ObjectId a string
-        lista_citas.append(cita)
-
-    return render_template('citas.html', citas=lista_citas)
-
-# Crear cita
-@app.route("/citas/agregar", methods=['POST'])
-def agregar_cita():
-    fecha = request.form.get('fecha')
-    hora = request.form.get('hora')
-    id_mascota = request.form.get('id_mascota')
-    id_veterinario = request.form.get('id_veterinario')
-    id_procedimiento = request.form.get('id_procedimiento')
-
-    if fecha and hora and id_mascota and id_veterinario and id_procedimiento:
-        mongo.db.citas.insert_one({
-            "fecha": fecha,
-            "hora": hora,
-            "id_mascota": id_mascota,
-            "id_veterinario": id_veterinario,
-            "id_procedimiento": id_procedimiento,
-            "fecha_creacion": datetime.datetime.now()
-        })
-
-    return redirect(url_for('citas'))
-
-# Obtener cita por ID
-@app.route("/citas/obtenerPorId/<id>", methods=['GET'])
-def obtener_cita_por_id(id):
-    cita = mongo.db.citas.find_one({"_id": ObjectId(id)})
-    if not cita:
-        return redirect(url_for('citas'))
-    cita['_id'] = str(cita['_id'])  # Convertir ObjectId a string
-    return render_template('actualizar_cita.html', cita=cita)
-
-# Actualizar cita
-@app.route("/citas/actualizar/<id>", methods=['POST'])
-def actualizar_cita(id):
-    fecha = request.form.get('fecha')
-    hora = request.form.get('hora')
-    id_mascota = request.form.get('id_mascota')
-    id_veterinario = request.form.get('id_veterinario')
-    id_procedimiento = request.form.get('id_procedimiento')
-
-    if fecha and hora and id_mascota and id_veterinario and id_procedimiento:
-        mongo.db.citas.update_one(
-            {"_id": ObjectId(id)},
-            {"$set": {
-                "fecha": fecha,
-                "hora": hora,
-                "id_mascota": id_mascota,
-                "id_veterinario": id_veterinario,
-                "id_procedimiento": id_procedimiento
-            }}
-        )
-
-    return redirect(url_for('citas'))
-
-# Eliminar cita
-@app.route("/citas/eliminar/<id>", methods=['POST'])
-def eliminar_cita(id):
-    mongo.db.citas.delete_one({"_id": ObjectId(id)})
-    return redirect(url_for('citas'))
 
 
 
