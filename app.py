@@ -10,6 +10,8 @@ mongo = PyMongo(app)
 def index():
     return render_template('index.html')
 
+
+DATABASE_URI = 'postgresql://postgres:123@localhost/cursos'
 ################# CRUD para Citas #################
 
 # Mostrar citas en la plantilla

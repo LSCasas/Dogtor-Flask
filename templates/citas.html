@@ -10,146 +10,170 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
-    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .navbar-nav .nav-item {
+        margin-right: 20px;
+      }
+
+      .navbar-nav .nav-link {
+        background-color: transparent;
+        color: #000;
+        border: none;
+        transition: color 0.3s;
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: #555;
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-custom">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">🐾 Dogtor</a>
+        <a class="navbar-brand" href="/">Gestión Veterinaria</a>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
+          data-bs-target="#navbarMenu"
+          aria-controls="navbarMenu"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarMenu">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Secciones
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="/veterinarios">Veterinarios</a>
-                </li>
-                <li><a class="dropdown-item" href="/dueños">Dueños</a></li>
-                <li><a class="dropdown-item" href="/citas">Citas</a></li>
-                <li><a class="dropdown-item" href="/mascotas">Mascotas</a></li>
-                <li>
-                  <a class="dropdown-item" href="/procedimientos"
-                    >Procedimientos</a
-                  >
-                </li>
-              </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="/veterinarios">Veterinarios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/dueños">Dueños</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/citas">Citas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mascotas">Mascotas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/procedimientos">Procedimientos</a>
             </li>
           </ul>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Buscar"
+              aria-label="Buscar"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Buscar
+            </button>
+          </form>
         </div>
       </div>
     </nav>
 
     <div class="container mt-4">
-      <h2 class="text-center">Registro de Citas</h2>
-      <form action="{{ url_for('agregar_cita') }}" method="POST">
-        <div class="mb-3">
-          <label for="fecha" class="form-label">Fecha</label>
-          <input type="date" class="form-control" name="fecha" required />
-        </div>
-        <div class="mb-3">
-          <label for="hora" class="form-label">Hora</label>
-          <input type="time" class="form-control" name="hora" required />
-        </div>
-        <div class="mb-3">
-          <label for="id_mascota" class="form-label">ID de Mascota</label>
-          <input type="text" class="form-control" name="id_mascota" required />
-        </div>
-        <div class="mb-3">
-          <label for="id_veterinario" class="form-label"
-            >ID de Veterinario</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="id_veterinario"
-            required
-          />
-        </div>
-        <div class="mb-3">
-          <label for="id_procedimiento" class="form-label"
-            >ID del Procedimiento</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="id_procedimiento"
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-custom w-100">
-          Registrar Cita
-        </button>
-      </form>
-    </div>
-
-    <div class="container mt-5">
-      <h2 class="text-center">Lista de Citas</h2>
-      <table class="table table-striped mt-3">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>ID Mascota</th>
-            <th>ID Veterinario</th>
-            <th>ID Procedimiento</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for cita in citas %}
-          <tr>
-            <td>{{ cita._id }}</td>
-            <td>{{ cita.fecha }}</td>
-            <td>{{ cita.hora }}</td>
-            <td>{{ cita.id_mascota }}</td>
-            <td>{{ cita.id_veterinario }}</td>
-            <td>{{ cita.id_procedimiento }}</td>
-            <td>
-              <a
-                href="{{ url_for('obtener_cita_por_id', id=cita._id) }}"
-                class="btn btn-sm btn-warning"
-                >Editar</a
+      <div class="row mb-3">
+        <div class="col-4">
+          <h2>Registro de Citas</h2>
+          <form action="{{ url_for('agregar_cita') }}" method="POST">
+            <div class="mb-3">
+              <label for="fecha" class="form-label">Fecha</label>
+              <input type="date" class="form-control" name="fecha" required />
+            </div>
+            <div class="mb-3">
+              <label for="hora" class="form-label">Hora</label>
+              <input type="time" class="form-control" name="hora" required />
+            </div>
+            <div class="mb-3">
+              <label for="id_mascota" class="form-label">ID de Mascota</label>
+              <input
+                type="text"
+                class="form-control"
+                name="id_mascota"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="id_veterinario" class="form-label"
+                >ID de Veterinario</label
               >
-              <form
-                action="{{ url_for('eliminar_cita', id=cita._id) }}"
-                method="POST"
-                class="d-inline"
-                onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');"
+              <input
+                type="text"
+                class="form-control"
+                name="id_veterinario"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="id_procedimiento" class="form-label"
+                >ID del Procedimiento</label
               >
-                <button type="submit" class="btn btn-sm btn-danger">
-                  Eliminar
-                </button>
-              </form>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+              <input
+                type="text"
+                class="form-control"
+                name="id_procedimiento"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+          </form>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="col-8">
+          <h2 class="text-center">Lista de Citas</h2>
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>ID Mascota</th>
+                <th>ID Veterinario</th>
+                <th>ID Procedimiento</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cita in citas %}
+              <tr>
+                <td>{{ cita._id }}</td>
+                <td>{{ cita.fecha }}</td>
+                <td>{{ cita.hora }}</td>
+                <td>{{ cita.id_mascota }}</td>
+                <td>{{ cita.id_veterinario }}</td>
+                <td>{{ cita.id_procedimiento }}</td>
+                <td>
+                  <a
+                    href="{{ url_for('obtener_cita_por_id', id=cita._id) }}"
+                    class="btn btn-sm btn-warning"
+                    >Editar</a
+                  >
+                  <form
+                    action="{{ url_for('eliminar_cita', id=cita._id) }}"
+                    method="POST"
+                    class="d-inline"
+                  >
+                    <button type="submit" class="btn btn-sm btn-danger">
+                      Eliminar
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
