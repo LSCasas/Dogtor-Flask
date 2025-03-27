@@ -8,6 +8,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contribution](#contribution)
+- [Learn More](#learn-more)
 
 ## Description
 
@@ -123,3 +124,13 @@ If you want to contribute to this project, follow the steps below:
    ```
 
 6. Create a Pull Request for your changes to be reviewed and merged into the main project.
+
+## Learn More
+
+To learn more about Flask, MongoDB, and using environment variables, check out the following resources:
+
+- [Flask Documentation](https://flask.palletsprojects.com/) - Learn about Flask and its features for web development.
+- [MongoDB Documentation](https://www.mongodb.com/docs/) - Learn about MongoDB and how to integrate it with your projects.
+- [Dotenv Documentation](https://www.npmjs.com/package/dotenv) - Learn about managing environment variables in Node.js (also applicable to Python with Flask).
+
+Your feedback and contributions to this project are welcome!
