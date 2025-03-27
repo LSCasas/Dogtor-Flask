@@ -1,3 +1,0 @@
-# Crear cita
-@app.route("/citas/agregar", methods=['POST'])
-def agregar_cita():

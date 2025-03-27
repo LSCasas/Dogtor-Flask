@@ -1,9 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
 from bson import ObjectId
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+
+mongo_uri = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}?retryWrites=true&w=majority"
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = "mongodb://localhost:27017/Dogtor"
+app.config['MONGO_URI'] = mongo_uri
 mongo = PyMongo(app)
 
 @app.route('/')
@@ -11,7 +22,7 @@ def index():
     return render_template('index.html')
 
 
-DATABASE_URI = 'postgresql://postgres:123@localhost/cursos'
+
 ################# CRUD para Citas #################
 
 # Mostrar citas en la plantilla
@@ -21,7 +32,7 @@ def citas():
     lista_citas = []
     
     for cita in citas:
-        cita['_id'] = str(cita['_id'])  # Convertir ObjectId a string
+        cita['_id'] = str(cita['_id']) 
         lista_citas.append(cita)
 
     return render_template('citas.html', citas=lista_citas)
@@ -29,6 +40,7 @@ def citas():
 # Crear cita
 @app.route("/citas/agregar", methods=['POST'])
 def agregar_cita():
+
     fecha = request.form.get('fecha')
     hora = request.form.get('hora')
     id_mascota = request.form.get('id_mascota')
@@ -50,13 +62,14 @@ def agregar_cita():
         print("Error: Datos incompletos")
 
     return redirect(url_for('citas'))
+
 # Obtener cita por ID
 @app.route("/citas/obtenerPorId/<id>", methods=['GET'])
 def obtener_cita_por_id(id):
     cita = mongo.db.citas.find_one({"_id": ObjectId(id)})
     if not cita:
         return redirect(url_for('citas'))
-    cita['_id'] = str(cita['_id'])  # Convertir ObjectId a string
+    cita['_id'] = str(cita['_id']) 
     return render_template('actualizar_cita.html', cita=cita)
 
 # Actualizar cita
@@ -98,7 +111,7 @@ def veterinarios():
     lista_veterinarios = []
     
     for veterinario in veterinarios:
-        veterinario['_id'] = str(veterinario['_id'])  # Convertir ObjectId a string
+        veterinario['_id'] = str(veterinario['_id']) 
         lista_veterinarios.append(veterinario)
 
     return render_template('veterinarios.html', veterinarios=lista_veterinarios)
@@ -125,7 +138,7 @@ def obtenerPorId(id):
     veterinario = mongo.db.veterinarios.find_one({"_id": ObjectId(id)})
     if not veterinario:
         return redirect(url_for('veterinarios'))
-    veterinario['_id'] = str(veterinario['_id'])  # Convertir ObjectId a string
+    veterinario['_id'] = str(veterinario['_id']) 
     return render_template('actualizar_veterinario.html', veterinario=veterinario)
 
 # Actualizar veterinario
@@ -159,7 +172,7 @@ def dueños():
     lista_dueños = []
     
     for dueño in dueños:
-        dueño['_id'] = str(dueño['_id'])  # Convertir ObjectId a string
+        dueño['_id'] = str(dueño['_id']) 
         lista_dueños.append(dueño)
 
     return render_template('dueños.html', dueños=lista_dueños)
@@ -186,7 +199,7 @@ def obtener_dueño_por_id(id):
     dueño = mongo.db.dueños.find_one({"_id": ObjectId(id)})
     if not dueño:
         return redirect(url_for('dueños'))
-    dueño['_id'] = str(dueño['_id'])  # Convertir ObjectId a string
+    dueño['_id'] = str(dueño['_id']) 
     return render_template('actualizar_dueño.html', dueño=dueño)
 
 # Actualizar dueño
@@ -224,7 +237,7 @@ def mascotas():
     lista_mascotas = []
     
     for mascota in mascotas:
-        mascota['_id'] = str(mascota['_id'])  # Convertir ObjectId a string
+        mascota['_id'] = str(mascota['_id']) 
         lista_mascotas.append(mascota)
 
     return render_template('mascotas.html', mascotas=lista_mascotas)
@@ -253,7 +266,7 @@ def obtener_mascota_por_id(id):
     mascota = mongo.db.mascotas.find_one({"_id": ObjectId(id)})
     if not mascota:
         return redirect(url_for('mascotas'))
-    mascota['_id'] = str(mascota['_id'])  # Convertir ObjectId a string
+    mascota['_id'] = str(mascota['_id']) 
     return render_template('actualizar_mascota.html', mascota=mascota)
 
 # Actualizar mascota
@@ -295,7 +308,7 @@ def procedimientos():
     lista_procedimientos = []
 
     for procedimiento in procedimientos:
-        procedimiento['_id'] = str(procedimiento['_id'])  # Convertir ObjectId a string
+        procedimiento['_id'] = str(procedimiento['_id']) 
         lista_procedimientos.append(procedimiento)
 
     return render_template('procedimientos.html', procedimientos=lista_procedimientos)
@@ -322,7 +335,7 @@ def obtener_procedimiento_por_id(id):
     procedimiento = mongo.db.procedimientos.find_one({"_id": ObjectId(id)})
     if not procedimiento:
         return redirect(url_for('procedimientos'))
-    procedimiento['_id'] = str(procedimiento['_id'])  # Convertir ObjectId a string
+    procedimiento['_id'] = str(procedimiento['_id']) 
     return render_template('actualizar_procedimiento.html', procedimiento=procedimiento)
 
 # Actualizar procedimiento
