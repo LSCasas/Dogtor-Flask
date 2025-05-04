@@ -1,101 +1,119 @@
-# DOGTOR
+# Dogtor
 
-**Short Description**: This project is a platform to manage pet owners, pets, veterinarians, procedures, and veterinary appointments. It allows administrators to manage the relationships between these elements efficiently.
+A Flask-based web app for managing pet owners, pets, vets, and appointments, built for educational purposes to demonstrate route-based entity relationships.
+
+---
 
 ## Table of Contents
 
-- [Description](#description)
+- [Project Structure](#project-structure)
+- [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Usage](#how-to-use-this-project)
+- [Requirements](#requirements)
 - [Contribution](#contribution)
 - [Learn More](#learn-more)
 
-## Description
+---
 
-This system was developed as part of a university project. It is designed to manage the information of pet owners, the pets themselves, available veterinarians, and the procedures they perform. Additionally, it allows for the creation and management of appointments between pets and veterinarians, ensuring that all related data is kept up to date.
+## Project Structure
 
-It is important to note that this project does **NOT** follow a REST-based architecture as it was developed for educational purposes and does not require that complexity. Instead of REST, it uses a **traditional route-based architecture in Flask**, where functionalities are managed directly through specific routes for each resource (owners, pets, veterinarians, procedures, appointments), without adhering to RESTful service conventions.
+```
+Dogtor-Flask/
+├── app.py               # Main Flask application
+├── templates/           # HTML templates
+├── static/              # Static assets (CSS, JS)
+├── requirements.txt     # Python dependencies
+├── example.env          # Environment variable example file
+├── README.md            # Project documentation
+```
 
-### Project Example
+---
 
-This project includes features such as:
+## Features
 
-- Creating pet owners.
-- Managing information about veterinary procedures.
-- Registering appointments for pets with veterinarians and assigned procedures.
-- Linking owners, pets, veterinarians, and procedures through their identifiers.
+- Create and manage pet owners
+- Register and edit pet information
+- Assign veterinarians to pets
+- Schedule veterinary procedures and appointments
+- Integrated with MongoDB
+- Traditional route-based system without REST conventions
+
+---
 
 ## Installation
 
-### Requirements
-
-- Python 3.x
-- MongoDB or PostgreSQL (depending on the case)
-- Flask
-
-### Steps
-
-1. Clone the repository:
+1. **Clone the repository:**
 
    ```bash
-   git clone git@github.com:LSCasas/Dogtor-Flask.git
+   git clone https://github.com/LSCasas/Dogtor-Flask.git
+   cd dogotor_flask_mongodb
    ```
 
-2. Navigate to the project folder:
-
-   ```bash
-   cd
-   ```
-
-3. Install the dependencies:
+2. **Install dependencies:**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Configure environment variables (if needed):
+3. **Configure environment variables:**
 
-   Copy the `example.env` file to `.env` and edit it with your MongoDB configurations, server port, and other required variables.
+   Copy the example file and edit your settings:
 
    ```bash
-   cp example.env
+   cp example.env .env
    ```
 
-5. Start the server:
+4. **Run the server:**
 
    ```bash
    python app.py
    ```
 
-## Usage
+---
 
-The system is designed to be used as an API that allows managing entities such as owners, pets, veterinarians, procedures, and appointments. Below are some examples of how to interact with the main functionalities:
+## How to Use This Project
 
-### Basic Example
+### Example Requests
 
-1. **Create an owner:**
+Use `curl` or Postman to test routes.
 
-   Make a POST request to `/owners/add` with the owner data (name, address, phone number).
+**1. Add Veterinarian:**
 
-   ```bash
-   curl -X POST -d "name=Carlos Méndez&address=Fictitious Street 123, City A&phone=555-1111" http://localhost:5000/owners/add
-   ```
+```bash
+curl -X POST -d "nombre=Dr. Ana López&especialidad=Cardiología&telefono=555-2222" http://localhost:5000/veterinarios/agregar
 
-2. **Create a pet:**
+```
 
-   Make a POST request to `/pets/add` with the pet data (name, species, age, owner_id).
+**2. Get Veterinarian by ID:**
 
-   ```bash
-   curl -X POST -d "name=Firulais&species=Dog&age=3&owner_id=67e5d25a46c5d4ef325adff0" http://localhost:5000/pets/add
-   ```
+```bash
+curl http://localhost:5000/veterinarios/obtenerPorId/YOUR_VET_ID
 
-3. **Create an appointment:**
+```
 
-   Make a POST request to `/appointments/add` with the appointment data (date, time, pet_id, veterinarian_id, procedure_id).
+**3. Update Veterinarian:**
 
-   ```bash
-   curl -X POST -d "date=2025-03-27&time=10:00&pet_id=67e5d4fd10fa97975cbba72e&veterinarian_id=67e5d1cd46c5d4ef325adfeb&procedure_id=67e5d38810fa97975cbba729" http://localhost:5000/appointments/add
-   ```
+```bash
+curl -X POST -d "nombre=Dr. Ana López&especialidad=Neurología&telefono=555-3333" http://localhost:5000/veterinarios/actualizar/YOUR_VET_ID
+
+```
+
+---
+
+## Architecture Notes
+
+It is important to note that this project does NOT follow a REST-based architecture as it was developed for educational purposes and does not require that complexity. Instead of REST, it uses a traditional route-based architecture in Flask.
+
+---
+
+## Requirements
+
+- Python 3.x
+- Flask
+- MongoDB or PostgreSQL
+
+---
 
 ## Contribution
 
@@ -125,12 +143,14 @@ If you want to contribute to this project, follow the steps below:
 
 6. Create a Pull Request for your changes to be reviewed and merged into the main project.
 
-## Learn More
+---
 
-To learn more about Flask, MongoDB, and using environment variables, check out the following resources:
+## 📚 Learn More
 
-- [Flask Documentation](https://flask.palletsprojects.com/) - Learn about Flask and its features for web development.
-- [MongoDB Documentation](https://www.mongodb.com/docs/) - Learn about MongoDB and how to integrate it with your projects.
-- [Dotenv Documentation](https://www.npmjs.com/package/dotenv) - Learn about managing environment variables in Node.js (also applicable to Python with Flask).
+- [Flask Documentation](https://flask.palletsprojects.com/)
+- [MongoDB Documentation](https://www.mongodb.com/docs/)
+- [Dotenv for Python](https://pypi.org/project/python-dotenv/)
+
+---
 
 Your feedback and contributions to this project are welcome!
